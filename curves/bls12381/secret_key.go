@@ -7,9 +7,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/cometbft/cometbft/crypto/bls/rand"
-
 	blst "github.com/supranational/blst/bindings/go"
+
+	"github.com/cosmos/crypto/utils/rand"
 )
 
 // bls12SecretKey used in the BLS signature scheme.

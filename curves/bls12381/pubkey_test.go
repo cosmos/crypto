@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/cometbft/cometbft/crypto/bls/blst"
+	blst "github.com/cosmos/crypto/curves/bls12381"
 )
 
 func TestPublicKeyFromBytes(t *testing.T) {

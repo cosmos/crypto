@@ -6,8 +6,9 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/cometbft/cometbft/crypto/bls/cache"
 	blst "github.com/supranational/blst/bindings/go"
+
+	"github.com/cosmos/crypto/utils/cache"
 )
 
 func init() {

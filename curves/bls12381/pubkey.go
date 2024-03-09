@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/cometbft/cometbft/crypto/bls/cache"
+	"github.com/cosmos/crypto/utils/cache"
 )
 
 const (
