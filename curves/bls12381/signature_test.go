@@ -89,7 +89,7 @@ func TestSignatureFromBytes(t *testing.T) {
 			res, err := SignatureFromBytes(test.input)
 			if test.err != nil {
 				assert.NotEqual(t, nil, err, "No error returned")
-				assert.ErrorContains(t, test.err, err.Error(), "Unexpected error returned")
+				assert.ErrorContains(t, err, test.err.Error(), "Unexpected error returned")
 			} else {
 				assert.NoError(t, err)
 				assert.Equal(t, 0, bytes.Compare(res.Marshal(), test.input))
@@ -143,7 +143,7 @@ func TestSignatureFromBytesNoValidation(t *testing.T) {
 			res, err := SignatureFromBytesNoValidation(test.input)
 			if test.err != nil {
 				assert.NotEqual(t, nil, err, "No error returned")
-				assert.ErrorContains(t, test.err, err.Error(), "Unexpected error returned")
+				assert.ErrorContains(t, err, test.err.Error(), "Unexpected error returned")
 			} else {
 				assert.NoError(t, err)
 				assert.Equal(t, 0, bytes.Compare(res.Marshal(), test.input))
@@ -152,6 +152,11 @@ func TestSignatureFromBytesNoValidation(t *testing.T) {
 	}
 }
 
+// TestCopy is a unit test function that tests the Copy method of the Signature struct.
+// It generates a random private key, creates two signatures using the key, and verifies
+// that the Copy method creates a deep copy of the original signature. It then modifies
+// one of the signatures and verifies that the modified signature is not equal to the
+// original signature.
 func TestCopy(t *testing.T) {
 	priv, err := RandKey()
 	require.NoError(t, err)
@@ -162,8 +167,6 @@ func TestCopy(t *testing.T) {
 	signatureB, ok := signatureA.Copy().(*Signature)
 	require.Equal(t, true, ok)
 
-	assert.NotEqual(t, signatureA, signatureB)
-	assert.NotEqual(t, signatureA.s, signatureB.s)
 	assert.Equal(t, signatureA, signatureB)
 
 	signatureA.s.Sign(key.p, []byte("bar"), dst)
