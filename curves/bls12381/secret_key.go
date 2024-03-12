@@ -21,8 +21,7 @@ type bls12SecretKey struct {
 func RandKey() (SecretKey, error) {
 	// Generate 32 bytes of randomness
 	var ikm [32]byte
-	_, err := rand.NewGenerator().Read(ikm[:])
-	if err != nil {
+	if _, err := rand.NewGenerator().Read(ikm[:]); err != nil {
 		return nil, err
 	}
 	// Defensive check, that we have not generated a secret key,
@@ -59,14 +58,12 @@ func IsZero(sKey []byte) bool {
 }
 
 func (s *bls12SecretKey) Sign(msg []byte) SignatureI {
-	signature := new(blstSignature).Sign(s.p, msg, dst)
-	return &Signature{s: signature}
+	return &Signature{s: new(blstSignature).Sign(s.p, msg, dst)}
 }
 
 // Marshal a secret key into a LittleEndian byte slice.
 func (s *bls12SecretKey) Marshal() []byte {
-	keyBytes := s.p.Serialize()
-	return keyBytes
+	return s.p.Serialize()
 }
 
 // PublicKey obtains the public key corresponding to the BLS secret key.
