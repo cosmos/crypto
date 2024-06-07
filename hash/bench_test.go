@@ -1,4 +1,4 @@
-package tmhash
+package hash
 
 import (
 	"bytes"

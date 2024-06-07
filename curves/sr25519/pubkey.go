@@ -2,7 +2,6 @@ package sr25519
 
 import (
 	"bytes"
-	"cosmos-crypto/tmhash"
 	crypto "cosmos-crypto/types"
 	"fmt"
 
@@ -27,7 +26,7 @@ func (pubKey PubKey) Address() crypto.Address {
 	if len(pubKey) != PubKeySize {
 		panic("pubkey is incorrect size")
 	}
-	return crypto.Address(tmhash.SumTruncated(pubKey[:]))
+	return crypto.Address(hash.SumTruncated(pubKey[:]))
 }
 
 // Bytes returns the byte representation of the PubKey.

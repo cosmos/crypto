@@ -1,7 +1,6 @@
-package tmhash_test
+package hash_test
 
 import (
-	"cosmos-crypto/tmhash"
 	"crypto/sha256"
 	"testing"
 
@@ -11,12 +10,12 @@ import (
 
 func TestHash(t *testing.T) {
 	testVector := []byte("abc")
-	hasher := tmhash.New()
+	hasher := hash.New()
 	_, err := hasher.Write(testVector)
 	require.NoError(t, err)
 	bz := hasher.Sum(nil)
 
-	bz2 := tmhash.Sum(testVector)
+	bz2 := hash.Sum(testVector)
 
 	hasher = sha256.New()
 	_, err = hasher.Write(testVector)
@@ -29,18 +28,18 @@ func TestHash(t *testing.T) {
 
 func TestHashTruncated(t *testing.T) {
 	testVector := []byte("abc")
-	hasher := tmhash.NewTruncated()
+	hasher := hash.NewTruncated()
 	_, err := hasher.Write(testVector)
 	require.NoError(t, err)
 	bz := hasher.Sum(nil)
 
-	bz2 := tmhash.SumTruncated(testVector)
+	bz2 := hash.SumTruncated(testVector)
 
 	hasher = sha256.New()
 	_, err = hasher.Write(testVector)
 	require.NoError(t, err)
 	bz3 := hasher.Sum(nil)
-	bz3 = bz3[:tmhash.TruncatedSize]
+	bz3 = bz3[:hash.TruncatedSize]
 
 	assert.Equal(t, bz, bz2)
 	assert.Equal(t, bz, bz3)

@@ -3,7 +3,6 @@ package ed25519
 import (
 	"bytes"
 	"cosmos-crypto/curves/batch"
-	"cosmos-crypto/tmhash"
 	crypto "cosmos-crypto/types"
 	"crypto/subtle"
 	"errors"
@@ -169,7 +168,7 @@ func (pubKey PubKey) Address() crypto.Address {
 	if len(pubKey) != PubKeySize {
 		panic("pubkey is incorrect size")
 	}
-	return crypto.Address(tmhash.SumTruncated(pubKey))
+	return crypto.Address(hash.SumTruncated(pubKey))
 }
 
 // Bytes returns the PubKey byte format.
