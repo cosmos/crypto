@@ -1,15 +1,17 @@
 package sr25519
 
 import (
-	"cosmos-crypto/curves/batch"
-	crypto "cosmos-crypto/types"
 	"errors"
 	"fmt"
+	"github.com/cosmos/crypto/curves/batch/verifier"
+	"github.com/cosmos/crypto/random"
+
+	crypto "github.com/cosmos/crypto/types"
 
 	"github.com/oasisprotocol/curve25519-voi/primitives/sr25519"
 )
 
-var _ batch.BatchVerifier = &BatchVerifier{}
+var _ verifier.BatchVerifier = &BatchVerifier{}
 
 // ErrInvalidKey represents an error that could occur as a result of
 // using an invalid private or public key. It wraps errors that could
@@ -46,7 +48,7 @@ type BatchVerifier struct {
 	*sr25519.BatchVerifier
 }
 
-func NewBatchVerifier() batch.BatchVerifier {
+func NewBatchVerifier() verifier.BatchVerifier {
 	return &BatchVerifier{sr25519.NewBatchVerifier()}
 }
 
@@ -73,5 +75,5 @@ func (b *BatchVerifier) Add(key crypto.PubKey, msg, signature []byte) error {
 }
 
 func (b *BatchVerifier) Verify() (bool, []bool) {
-	return b.BatchVerifier.Verify(crypto.CReader())
+	return b.BatchVerifier.Verify(random.CReader())
 }

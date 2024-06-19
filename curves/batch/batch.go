@@ -1,24 +1,15 @@
 package batch
 
 import (
-	"cosmos-crypto/curves/ed25519"
-	"cosmos-crypto/curves/sr25519"
-	crypto "cosmos-crypto/types"
+	"github.com/cosmos/crypto/curves/batch/verifier"
+	"github.com/cosmos/crypto/curves/ed25519"
+	"github.com/cosmos/crypto/curves/sr25519"
+	"github.com/cosmos/crypto/types"
 )
-
-type BatchVerifier interface {
-	// Add appends an entry into the BatchVerifier.
-	Add(key crypto.PubKey, message, signature []byte) error
-	// Verify verifies all the entries in the BatchVerifier, and returns
-	// if every signature in the batch is valid, and a vector of bools
-	// indicating the verification status of each signature (in the order
-	// that signatures were added to the batch).
-	Verify() (bool, []bool)
-}
 
 // CreateBatchVerifier checks if a key type implements the batch verifier interface.
 // Currently only ed25519 & sr25519 supports batch verification.
-func CreateBatchVerifier(pk crypto.PubKey) (BatchVerifier, bool) {
+func CreateBatchVerifier(pk types.PubKey) (verifier.BatchVerifier, bool) {
 	switch pk.Type() {
 	case ed25519.KeyType:
 		return ed25519.NewBatchVerifier(), true
@@ -32,7 +23,7 @@ func CreateBatchVerifier(pk crypto.PubKey) (BatchVerifier, bool) {
 
 // SupportsBatchVerifier checks if a key type implements the batch verifier
 // interface.
-func SupportsBatchVerifier(pk crypto.PubKey) bool {
+func SupportsBatchVerifier(pk types.PubKey) bool {
 	if pk == nil {
 		return false
 	}

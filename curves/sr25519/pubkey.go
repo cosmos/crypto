@@ -2,13 +2,14 @@ package sr25519
 
 import (
 	"bytes"
-	crypto "cosmos-crypto/types"
 	"fmt"
+	"github.com/cosmos/crypto/hash/sha256"
+	"github.com/cosmos/crypto/types"
 
 	"github.com/oasisprotocol/curve25519-voi/primitives/sr25519"
 )
 
-var _ crypto.PubKey = PubKey{}
+var _ types.PubKey = PubKey{}
 
 const (
 	// PubKeySize is the number of bytes in an Sr25519 public key.
@@ -22,11 +23,11 @@ const (
 type PubKey []byte
 
 // Address is the SHA256-20 of the raw pubkey bytes.
-func (pubKey PubKey) Address() crypto.Address {
+func (pubKey PubKey) Address() types.Address {
 	if len(pubKey) != PubKeySize {
 		panic("pubkey is incorrect size")
 	}
-	return crypto.Address(hash.SumTruncated(pubKey[:]))
+	return types.Address(sha256.SumTruncated(pubKey[:]))
 }
 
 // Bytes returns the byte representation of the PubKey.
@@ -36,7 +37,7 @@ func (pubKey PubKey) Bytes() []byte {
 
 // Equals - checks that two public keys are the same time
 // Runs in constant time based on length of the keys.
-func (pubKey PubKey) Equals(other crypto.PubKey) bool {
+func (pubKey PubKey) Equals(other types.PubKey) bool {
 	if otherSr, ok := other.(PubKey); ok {
 		return bytes.Equal(pubKey[:], otherSr[:])
 	}

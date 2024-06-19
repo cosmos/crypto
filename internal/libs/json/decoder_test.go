@@ -1,6 +1,7 @@
 package json_test
 
 import (
+	"encoding/json"
 	"reflect"
 	"testing"
 	"time"

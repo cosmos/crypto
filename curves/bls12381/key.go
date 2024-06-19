@@ -3,8 +3,8 @@
 package bls12381
 
 import (
-	crypto "cosmos-crypto/types"
 	"errors"
+	"github.com/cosmos/crypto/types"
 )
 
 const (
@@ -24,7 +24,7 @@ var ErrDisabled = errors.New("bls12_381 is disabled")
 // BLS12-381 private key type.
 
 // Compile-time type assertion.
-var _ crypto.PrivKey = &PrivKey{}
+var _ types.PrivKey = &PrivKey{}
 
 // PrivKey represents a BLS private key noop when blst is not set as a build flag and cgo is disabled.
 type PrivKey []byte
@@ -45,12 +45,12 @@ func (privKey PrivKey) Bytes() []byte {
 }
 
 // PubKey always panics.
-func (PrivKey) PubKey() crypto.PubKey {
+func (PrivKey) PubKey() types.PubKey {
 	panic("bls12_381 is disabled")
 }
 
 // Equals always panics.
-func (PrivKey) Equals(crypto.PrivKey) bool {
+func (PrivKey) Equals(types.PrivKey) bool {
 	panic("bls12_381 is disabled")
 }
 
@@ -73,13 +73,13 @@ func (PrivKey) Sign([]byte) ([]byte, error) {
 // BLS12-381 public key type.
 
 // Compile-time type assertion.
-var _ crypto.PubKey = &PubKey{}
+var _ types.PubKey = &PubKey{}
 
 // PubKey represents a BLS private key noop when blst is not set as a build flag and cgo is disabled.
 type PubKey []byte
 
 // Address always panics.
-func (PubKey) Address() crypto.Address {
+func (PubKey) Address() types.Address {
 	panic("bls12_381 is disabled")
 }
 
@@ -99,6 +99,6 @@ func (PubKey) Type() string {
 }
 
 // Equals always panics.
-func (PubKey) Equals(crypto.PubKey) bool {
+func (PubKey) Equals(types.PubKey) bool {
 	panic("bls12_381 is disabled")
 }

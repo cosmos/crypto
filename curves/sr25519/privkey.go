@@ -1,17 +1,19 @@
 package sr25519
 
 import (
-	crypto "cosmos-crypto/types"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/cosmos/crypto/hash/sha256"
+	"github.com/cosmos/crypto/random"
+	crypto "github.com/cosmos/crypto/types"
 	"io"
 
 	"github.com/oasisprotocol/curve25519-voi/primitives/sr25519"
 )
 
 var (
-	_ crypto.PrivKey = PrivKey{}
+	_ crypto.PrivKey[crypto.PubKey] = PrivKey{}
 
 	signingCtx = sr25519.NewSigningContext([]byte{})
 )
@@ -47,7 +49,7 @@ func (privKey PrivKey) Sign(msg []byte) ([]byte, error) {
 
 	st := signingCtx.NewTranscriptBytes(msg)
 
-	sig, err := privKey.kp.Sign(crypto.CReader(), st)
+	sig, err := privKey.kp.Sign(random.CReader(), st)
 	if err != nil {
 		return nil, ErrInvalidSignature{
 			Err: fmt.Errorf("sr25519: failed to sign message: %w", err),
@@ -135,7 +137,7 @@ func (privKey *PrivKey) UnmarshalJSON(data []byte) error {
 // It uses OS randomness in conjunction with the current global random seed
 // in cometbft/libs/rand to generate the private key.
 func GenPrivKey() PrivKey {
-	return genPrivKey(crypto.CReader())
+	return genPrivKey(random.CReader())
 }
 
 // genPrivKey generates a new sr25519 private key using the provided reader.
@@ -158,7 +160,7 @@ func genPrivKey(rng io.Reader) PrivKey {
 // NOTE: secret should be the output of a KDF like bcrypt,
 // if it's derived from user input.
 func GenPrivKeyFromSecret(secret []byte) PrivKey {
-	seed := crypto.Sha256(secret) // Not Ripemd160 because we want 32 bytes.
+	seed := sha256.Sum(secret) // Not Ripemd160 because we want 32 bytes.
 
 	var privKey PrivKey
 	if err := privKey.msk.UnmarshalBinary(seed); err != nil {

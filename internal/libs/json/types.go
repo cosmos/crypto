@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"reflect"
 
-	cmtsync "cosmos-crypto/internal/sync"
+	cmtsync "github.com/cosmos/crypto/internal/sync"
 )
 
 // typeRegistry contains globally registered types for JSON encoding/decoding.

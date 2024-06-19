@@ -1,12 +1,13 @@
 package types
 
 import (
-	"cosmos-crypto/internal/libs/bytes"
+	"github.com/cosmos/crypto/hash/sha256"
+	"github.com/cosmos/crypto/internal/libs/bytes"
 )
 
 const (
 	// AddressSize is the size of a pubkey address.
-	AddressSize = hash.TruncatedSize
+	AddressSize = sha256.TruncatedSize
 )
 
 // Address An address is a []byte, but hex-encoded even in JSON.
@@ -15,5 +16,5 @@ const (
 type Address = bytes.HexBytes
 
 func AddressHash(bz []byte) Address {
-	return Address(hash.SumTruncated(bz))
+	return sha256.SumTruncated(bz)
 }

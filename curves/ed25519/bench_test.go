@@ -1,11 +1,12 @@
 package ed25519
 
 import (
-	"cosmos-crypto/internal/benchmarking"
-	crypto "cosmos-crypto/types"
 	"fmt"
 	"io"
 	"testing"
+
+	"github.com/cosmos/crypto/internal/benchmarking"
+	crypto "github.com/cosmos/crypto/types"
 
 	"github.com/stretchr/testify/require"
 )

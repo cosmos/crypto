@@ -1,9 +1,9 @@
 package xsalsa20symmetric
 
 import (
-	crypto "cosmos-crypto/internal/random"
 	"errors"
 	"fmt"
+	crypto "github.com/cosmos/crypto/random"
 
 	"golang.org/x/crypto/nacl/secretbox"
 )

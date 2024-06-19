@@ -8,10 +8,11 @@ type PubKey interface {
 	Type() string
 }
 
-type PrivKey interface {
+// PrivKey interface with generics
+type PrivKey[T PubKey] interface {
 	Bytes() []byte
 	Sign(msg []byte) ([]byte, error)
-	PubKey() PubKey
-	Equals(other PrivKey) bool
+	PubKey() T
+	Equals(other PrivKey[T]) bool
 	Type() string
 }

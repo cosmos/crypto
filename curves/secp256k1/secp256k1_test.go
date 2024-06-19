@@ -1,12 +1,13 @@
 package secp256k1_test
 
 import (
-	crypto "cosmos-crypto"
-	"cosmos-crypto/curves/secp256k1"
-	"cosmos-crypto/internal/random"
 	"encoding/hex"
+	"github.com/cosmos/crypto/random"
 	"math/big"
 	"testing"
+
+	"github.com/cosmos/crypto/curves/secp256k1"
+	crypto "github.com/cosmos/crypto/types"
 
 	underlyingsecp256k1 "github.com/btcsuite/btcd/btcec/v2"
 	"github.com/btcsuite/btcd/btcutil/base58"

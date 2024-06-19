@@ -2,14 +2,15 @@ package secp256k1
 
 import (
 	"bytes"
-	crypto "cosmos-crypto/types"
-	"crypto/sha256"
 	"crypto/subtle"
 	"fmt"
+	"github.com/cosmos/crypto/random"
+	crypto "github.com/cosmos/crypto/types"
 	"io"
 	"math/big"
 
-	cmtjson "cosmos-crypto/internal/libs/json"
+	"github.com/cosmos/crypto/hash/sha256"
+	cmtjson "github.com/cosmos/crypto/internal/libs/json"
 
 	secp256k1 "github.com/btcsuite/btcd/btcec/v2"
 	"github.com/btcsuite/btcd/btcec/v2/ecdsa"
@@ -30,7 +31,7 @@ func init() {
 	cmtjson.RegisterType(PrivKey{}, PrivKeyName)
 }
 
-var _ crypto.PrivKey = PrivKey{}
+var _ crypto.PrivKey[PubKey] = PrivKey{}
 
 // PrivKey implements PrivKey.
 type PrivKey []byte
@@ -66,7 +67,7 @@ func (PrivKey) Type() string {
 // GenPrivKey generates a new ECDSA private key on curve secp256k1 private key.
 // It uses OS randomness to generate the private key.
 func GenPrivKey() PrivKey {
-	return genPrivKey(crypto.CReader())
+	return genPrivKey(random.CReader())
 }
 
 // genPrivKey generates a new secp256k1 private key using the provided reader.
@@ -105,7 +106,7 @@ var one = new(big.Int).SetInt64(1)
 // NOTE: secret should be the output of a KDF like bcrypt,
 // if it's derived from user input.
 func GenPrivKeySecp256k1(secret []byte) PrivKey {
-	secHash := sha256.Sum256(secret)
+	secHash := sha256.Sum(secret)
 	// to guarantee that we have a valid field element, we use the approach of:
 	// "Suite B Implementer’s Guide to FIPS 186-3", A.2.1
 	// https://apps.nsa.gov/iaarchive/library/ia-guidance/ia-solutions-for-classified/algorithm-guidance/suite-b-implementers-guide-to-fips-186-3-ecdsa.cfm
@@ -128,7 +129,7 @@ func GenPrivKeySecp256k1(secret []byte) PrivKey {
 func (privKey PrivKey) Sign(msg []byte) ([]byte, error) {
 	priv, _ := secp256k1.PrivKeyFromBytes(privKey)
 
-	sig, err := ecdsa.SignCompact(priv, crypto.Sha256(msg), false)
+	sig, err := ecdsa.SignCompact(priv, sha256.Sum(msg), false)
 	if err != nil {
 		return nil, err
 	}
@@ -213,7 +214,7 @@ func (pubKey PubKey) VerifySignature(msg []byte, sigStr []byte) bool {
 		return false
 	}
 
-	return signature.Verify(crypto.Sha256(msg), pub)
+	return signature.Verify(sha256.Sum(msg), pub)
 }
 
 // Read Signature struct from R || S. Caller needs to ensure

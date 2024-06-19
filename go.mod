@@ -1,6 +1,6 @@
-module cosmos-crypto
+module github.com/cosmos/crypto
 
-go 1.22.4
+go 1.22.2
 
 require (
 	github.com/btcsuite/btcd/btcec/v2 v2.3.3

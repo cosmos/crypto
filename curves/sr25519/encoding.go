@@ -1,6 +1,6 @@
 package sr25519
 
-import cmtjson "cosmos-crypto/internal/libs/json"
+import cmtjson "github.com/cosmos/crypto/internal/libs/json"
 
 const (
 	PrivKeyName = "tendermint/PrivKeySr25519"

@@ -1,4 +1,4 @@
-package hash
+package sha256
 
 import (
 	"crypto/sha256"
@@ -73,6 +73,6 @@ func NewTruncated() hash.Hash {
 
 // SumTruncated returns the first 20 bytes of SHA256 of the bz.
 func SumTruncated(bz []byte) []byte {
-	hash := sha256.Sum256(bz)
-	return hash[:TruncatedSize]
+	h := sha256.Sum256(bz)
+	return h[:TruncatedSize]
 }

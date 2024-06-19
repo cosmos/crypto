@@ -2,12 +2,16 @@ package ed25519
 
 import (
 	"bytes"
-	"cosmos-crypto/curves/batch"
-	crypto "cosmos-crypto/types"
 	"crypto/subtle"
 	"errors"
 	"fmt"
+	"github.com/cosmos/crypto/hash/sha256"
+	"github.com/cosmos/crypto/random"
 	"io"
+
+	"github.com/cosmos/crypto/curves/batch/verifier"
+	cmtjson "github.com/cosmos/crypto/internal/libs/json"
+	crypto "github.com/cosmos/crypto/types"
 
 	"github.com/oasisprotocol/curve25519-voi/primitives/ed25519"
 	"github.com/oasisprotocol/curve25519-voi/primitives/ed25519/extra/cache"
@@ -29,8 +33,8 @@ func (e ErrInvalidKeyLen) Error() string {
 }
 
 var (
-	_ crypto.PrivKey      = PrivKey{}
-	_ batch.BatchVerifier = &BatchVerifier{}
+	_ crypto.PrivKey         = PrivKey{}
+	_ verifier.BatchVerifier = &BatchVerifier{}
 
 	// curve25519-voi's Ed25519 implementation supports configurable
 	// verification behavior, and CometBFT uses the ZIP-215 verification
@@ -133,7 +137,7 @@ func (PrivKey) Type() string {
 // It uses OS randomness in conjunction with the current global random seed
 // in cometbft/libs/rand to generate the private key.
 func GenPrivKey() PrivKey {
-	return genPrivKey(crypto.CReader())
+	return genPrivKey(random.CReader())
 }
 
 // genPrivKey generates a new ed25519 private key using the provided reader.
@@ -151,7 +155,7 @@ func genPrivKey(rand io.Reader) PrivKey {
 // NOTE: secret should be the output of a KDF like bcrypt,
 // if it's derived from user input.
 func GenPrivKeyFromSecret(secret []byte) PrivKey {
-	seed := crypto.Sha256(secret) // Not Ripemd160 because we want 32 bytes.
+	seed := sha256.Sum(secret) // Not Ripemd160 because we want 32 bytes.
 
 	return PrivKey(ed25519.NewKeyFromSeed(seed))
 }
@@ -168,7 +172,7 @@ func (pubKey PubKey) Address() crypto.Address {
 	if len(pubKey) != PubKeySize {
 		panic("pubkey is incorrect size")
 	}
-	return crypto.Address(hash.SumTruncated(pubKey))
+	return crypto.Address(sha256.SumTruncated(pubKey))
 }
 
 // Bytes returns the PubKey byte format.
@@ -208,7 +212,7 @@ type BatchVerifier struct {
 	*ed25519.BatchVerifier
 }
 
-func NewBatchVerifier() crypto.BatchVerifier {
+func NewBatchVerifier() *BatchVerifier {
 	return &BatchVerifier{ed25519.NewBatchVerifier()}
 }
 
@@ -235,5 +239,5 @@ func (b *BatchVerifier) Add(key crypto.PubKey, msg, signature []byte) error {
 }
 
 func (b *BatchVerifier) Verify() (bool, []bool) {
-	return b.BatchVerifier.Verify(crypto.CReader())
+	return b.BatchVerifier.Verify(random.CReader())
 }

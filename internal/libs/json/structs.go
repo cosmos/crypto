@@ -6,7 +6,7 @@ import (
 	"strings"
 	"unicode"
 
-	"cosmos-crypto/internal/sync"
+	"github.com/cosmos/crypto/internal/sync"
 )
 
 // cache caches struct info.

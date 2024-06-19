@@ -1,7 +1,7 @@
 package xsalsa20symmetric
 
 import (
-	crypto "cosmos-crypto"
+	"github.com/cosmos/crypto/hash/sha256"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -26,7 +26,7 @@ func TestSimpleWithKDF(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	secret = crypto.Sha256(secret)
+	secret = sha256.Sum(secret)
 
 	ciphertext := EncryptSymmetric(plaintext, secret)
 	plaintext2, err := DecryptSymmetric(ciphertext, secret)
