@@ -1,27 +1,9 @@
-# cosmos-crypto
+# crypto
 
 cosmos-crypto is the cryptographic package adapted for the interchain stack
 
 ## Importing it
 
 To get the interfaces,
-`import "github.com/cosmos/crypto"`
+`import "github.com/cosmos/crypto/types"`
 
-For any specific algorithm, use its specific module e.g.
-`import "github.com/cosmos/crypto/curves/ed25519"`
-
-
-## JSON Encoding
-
-JSON encoding is done using the internal json encoder.
-
-```go
-Example JSON encodings:
-
-ed25519.PrivKey     - {"type":"tendermint/PrivKeyEd25519","value":"EVkqJO/jIXp3rkASXfh9YnyToYXRXhBr6g9cQVxPFnQBP/5povV4HTjvsy530kybxKHwEi85iU8YL0qQhSYVoQ=="}
-ed25519.PubKey      - {"type":"tendermint/PubKeyEd25519","value":"AT/+aaL1eB0477Mud9JMm8Sh8BIvOYlPGC9KkIUmFaE="}
-sr25519.PrivKeySr25519   - {"type":"tendermint/PrivKeySr25519","value":"xtYVH8UCIqfrY8FIFc0QEpAEBShSG4NT0zlEOVSZ2w4="}
-sr25519.PubKeySr25519    - {"type":"tendermint/PubKeySr25519","value":"8sKBLKQ/OoXMcAJVxBqz1U7TyxRFQ5cmliuHy4MrF0s="}
-crypto.PrivKeySecp256k1   - {"type":"tendermint/PrivKeySecp256k1","value":"zx4Pnh67N+g2V+5vZbQzEyRerX9c4ccNZOVzM9RvJ0Y="}
-crypto.PubKeySecp256k1    - {"type":"tendermint/PubKeySecp256k1","value":"A8lPKJXcNl5VHt1FK8a244K9EJuS4WX1hFBnwisi0IJx"}
-```
