@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cosmos/crypto/internal/libs/json"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

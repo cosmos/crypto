@@ -1,7 +1,7 @@
 package json_test
 
 import (
-	"cosmos-crypto/internal/libs/json"
+	"github.com/cosmos/crypto/internal/libs/json"
 	"time"
 )
 
