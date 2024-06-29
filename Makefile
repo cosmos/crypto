@@ -7,13 +7,21 @@ GOLANGCI_VERSION := v1.59.0
 all: build
 
 build:
-	@echo "Building..."
-	@go build $(PKG)
+	@if [ -z "$(TAGS)" ]; then \
+		echo "Building..."; \
+	else \
+		echo "Building with tags: $(TAGS)"; \
+	fi
+	@go build -tags "$(TAGS)" $(PKG)
 
 # Run tests
 test:
-	@echo "Running tests..."
-	@go test -v $(PKG)
+	@if [ -z "$(TAGS)" ]; then \
+		echo "Running tests..."; \
+	else \
+		echo "Running tests with tags: $(TAGS)"; \
+	fi
+	@go test -tags "$(TAGS)" -v $(PKG)
 
 # Install golangci-lint
 lint-install:
