@@ -23,8 +23,13 @@ func RandKey() (SecretKey, error) {
 	if err != nil {
 		return nil, err
 	}
+	return GenPrivKeyFromSeed(ikm)
+}
+
+// GenPrivKeyFromSeed creates a new private key directly from the seed passed as parameter
+func GenPrivKeyFromSeed(seed [32]byte) (SecretKey, error) {
 	// Defensive check, that we have not generated a secret key,
-	secKey := &bls12SecretKey{blst.KeyGen(ikm[:])}
+	secKey := &bls12SecretKey{blst.KeyGen(seed[:])}
 	if IsZero(secKey.Marshal()) {
 		return nil, errors.New("received secret key is zero")
 	}
