@@ -2,6 +2,7 @@ package blst
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"errors"
 	"reflect"
 	"testing"
@@ -17,6 +18,20 @@ func TestSignVerify(t *testing.T) {
 	msg := []byte("hello")
 	sig := priv.Sign(msg)
 	assert.Equal(t, true, sig.Verify(pub, msg), "Signature did not verify")
+}
+
+func TestSignVerifyRecreatedKey(t *testing.T) {
+	seedStr := []byte("this is my little key")
+	seed := sha256.Sum256(seedStr)
+	priv, err := GenPrivKeyFromSeed(seed)
+	require.NoError(t, err)
+	msg := []byte("hello crypto")
+	sig := priv.Sign(msg)
+
+	priv2, err := GenPrivKeyFromSeed(seed)
+	require.NoError(t, err)
+	pub2 := priv2.PublicKey()
+	assert.True(t, sig.Verify(pub2, msg), "Signature did not verify")
 }
 
 func TestVerifySingleSignature_InvalidSignature(t *testing.T) {
