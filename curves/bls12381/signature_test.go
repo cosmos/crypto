@@ -31,7 +31,6 @@ func TestSignVerifyRecreatedKey(t *testing.T) {
 	priv2, err := GenPrivKeyFromSeed(seed)
 	require.NoError(t, err)
 	pub2 := priv2.PublicKey()
-
 	assert.Equal(t, true, sig.Verify(pub2, msg), "Signature did not verify")
 }
 
