@@ -21,7 +21,6 @@ func TestSignVerify(t *testing.T) {
 }
 
 func TestSignVerifyRecreatedKey(t *testing.T) {
-	//seed := [32]byte(sha256.Sum("this is my little key"))
 	seedStr := []byte("this is my little key")
 	seed := sha256.Sum256(seedStr)
 	priv, err := GenPrivKeyFromSeed(seed)
