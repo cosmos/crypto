@@ -1,43 +1,18 @@
-# Variables
-PKG := ./...
-GOFILES := $(shell find . -name '*.go' | grep -v _test.go)
-TESTFILES := $(shell find . -name '*_test.go')
-GOLANGCI_VERSION := v1.59.0
+WALLET_BIN := build/wallet
 
-all: build
+.PHONY: demo run clean
 
-build:
-	@if [ -z "$(TAGS)" ]; then \
-		echo "Building..."; \
-	else \
-		echo "Building with tags: $(TAGS)"; \
-	fi
-	@go build -tags "$(TAGS)" $(PKG)
+.DEFAULT_GOAL := build
 
-# Run tests
-test:
-	@if [ -z "$(TAGS)" ]; then \
-		echo "Running tests..."; \
-	else \
-		echo "Running tests with tags: $(TAGS)"; \
-	fi
-	@go test -tags "$(TAGS)" -v $(PKG)
+# Build the wallet command
+build-wallet:
+	go build -o $(WALLET_BIN) ./cmd
 
-# Install golangci-lint
-lint-install:
-	@echo "--> Installing golangci-lint $(GOLANGCI_VERSION)"
-	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@$(GOLANGCI_VERSION)
+# Run the demo
+demo:
+	cd demo; \
+	go run main.go
 
-# Run golangci-lint
-lint:
-	@echo "--> Running linter"
-	$(MAKE) lint-install
-	@golangci-lint run --timeout=15m
-
-# Run golangci-lint and fix
-lint-fix:
-	@echo "--> Running linter with fix"
-	$(MAKE) lint-install
-	@golangci-lint run --fix
-
-.PHONY: build test lint-install lint lint-fix
+# Clean built binaries
+clean:
+	rm -f $(WALLET_BIN)
