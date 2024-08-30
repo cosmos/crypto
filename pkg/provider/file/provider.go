@@ -15,7 +15,6 @@ const (
 type FileProvider struct {
 	filePath string
 	metadata components.ProviderMetadata
-	signer   components.Signer
 }
 
 var _ components.CryptoProvider = &FileProvider{}
