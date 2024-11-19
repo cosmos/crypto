@@ -1,13 +1,14 @@
 package keyring
 
 import (
-	"crypto-provider/pkg/keyring/internal"
 	"errors"
 	"fmt"
 	"io"
 	"os"
 
 	"github.com/99designs/keyring"
+	
+	"github.com/cosmos/crypto-provider/pkg/keyring/internal"
 )
 
 // Backend options for Keyring
@@ -18,9 +19,11 @@ const (
 	BackendMemory = "memory"
 )
 
-// const keyringFileDirName = "keyring-file"
-// const keyringTestDirName = "keyring-test"
-// const passKeyringPrefix = "cloudproxy"
+const (
+	keyringFileDirName = "keyring-file"
+	keyringTestDirName = "keyring-test"
+	passKeyringPrefix  = "keyring-%s"
+)
 
 var (
 	_ Keyring = &keystore{}
@@ -170,15 +173,15 @@ func newTestBackendKeyringConfig(appName, dir string) keyring.Config {
 }
 
 // newPassBackendKeyringConfig creates a new pass backend keyring configuration.
-// func newPassBackendKeyringConfig(appName, dir string) keyring.Config {
-//     prefix := fmt.Sprintf(passKeyringPrefix, appName)
+func newPassBackendKeyringConfig(appName, _ string, _ io.Reader) (keyring.Config, error) {
+	prefix := fmt.Sprintf(passKeyringPrefix, appName)
 
-//     return keyring.Config{
-//         AllowedBackends: []keyring.BackendType{keyring.PassBackend},
-//         ServiceName:     appName,
-//         PassPrefix:      prefix,
-//     }
-// }
+	return keyring.Config{
+		AllowedBackends: []keyring.BackendType{keyring.PassBackend},
+		ServiceName:     appName,
+		PassPrefix:      prefix,
+	}, nil
+}
 
 // newFileBackendKeyringConfig creates a new file backend keyring configuration.
 func newFileBackendKeyringConfig(name, dir string, buf io.Reader) (keyring.Config, error) {

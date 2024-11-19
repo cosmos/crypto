@@ -1,11 +1,11 @@
 package signer
 
 import (
-	"crypto-provider/pkg/components"
 	"crypto/ed25519"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/cosmos/crypto-provider/pkg/components"
 	"os"
 	"path/filepath"
 )

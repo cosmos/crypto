@@ -1,10 +1,11 @@
 package file
 
 import (
-	"crypto-provider/pkg/components"
-	"crypto-provider/pkg/factory"
 	"encoding/json"
 	"fmt"
+
+	"github.com/cosmos/crypto-provider/pkg/components"
+	"github.com/cosmos/crypto-provider/pkg/factory"
 )
 
 // TODO: Should each provider have its own go.mod?
@@ -13,11 +14,13 @@ const (
 	SourceMetadata = "metadata"
 )
 
-type FileProviderFactory struct{}
+type FileProviderFactory struct {
+	components.BaseFactory
+}
 
 // Register into the global factory
 func init() {
-	f := factory.GetFactory()
+	f := factory.GetGlobalFactory()
 	err := f.RegisterFactory(&FileProviderFactory{})
 	if err != nil {
 		// TODO err instead of panic
@@ -40,7 +43,7 @@ func (f FileProviderFactory) Create(source components.BuildSource) (components.C
 	}
 }
 
-func createDefault(name string) (components.CryptoProvider, error) {
+func createDefault(name string) (*FileProvider, error) {
 	meta := components.ProviderMetadata{
 		Version: Version,
 		Type:    ProviderTypeFile,
@@ -70,7 +73,7 @@ func createFromMetadata(metadata components.ProviderMetadata) (*FileProvider, er
 	}, nil
 }
 
-func createFromJson(jsonString string) (components.CryptoProvider, error) {
+func createFromJson(jsonString string) (*FileProvider, error) {
 	var metadata components.ProviderMetadata
 	err := json.Unmarshal([]byte(jsonString), &metadata)
 	if err != nil {
@@ -85,4 +88,9 @@ func (FileProviderFactory) Type() string {
 
 func (f FileProviderFactory) SupportedSources() []string {
 	return []string{SourceMetadata, "new", "mnemonic", "json"}
+}
+
+// Add this method to implement the full interface
+func (f FileProviderFactory) Save(cp components.CryptoProvider) error {
+	return f.BaseFactory.Save(cp)
 }

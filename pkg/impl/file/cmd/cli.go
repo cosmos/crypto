@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"crypto-provider/pkg/cli"
 	"fmt"
+	"github.com/cosmos/crypto-provider/pkg/cli"
 	"github.com/spf13/cobra"
 )
 

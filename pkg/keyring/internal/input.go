@@ -4,13 +4,13 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"github.com/bgentry/speakeasy"
-	"github.com/mattn/go-isatty"
 	"io"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/bgentry/speakeasy"
+	"github.com/mattn/go-isatty"
 	"golang.org/x/crypto/bcrypt"
 )
 

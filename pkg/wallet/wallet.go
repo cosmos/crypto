@@ -1,14 +1,14 @@
 package wallet
 
 import (
-	"crypto-provider/cmd/register"
 	"encoding/json"
 	"fmt"
 	"os"
 
-	"crypto-provider/pkg/components"
-	"crypto-provider/pkg/factory"
-	"crypto-provider/pkg/keyring"
+	"github.com/cosmos/crypto-provider/cmd/register"
+	"github.com/cosmos/crypto-provider/pkg/components"
+	"github.com/cosmos/crypto-provider/pkg/factory"
+	"github.com/cosmos/crypto-provider/pkg/keyring"
 )
 
 // Wallet interface defines the operations that can be performed on a wallet.
@@ -51,7 +51,7 @@ func NewKeyringWallet(appName, backend, rootDir string, addressFormatter compone
 
 	return &KeyringWallet{
 		kr:               kr,
-		factory:          factory.GetFactory(),
+		factory:          factory.GetGlobalFactory(),
 		addressFormatter: addressFormatter,
 	}, nil
 }

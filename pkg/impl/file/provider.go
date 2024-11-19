@@ -1,10 +1,10 @@
 package file
 
 import (
-	"crypto-provider/pkg/components"
-	"crypto-provider/pkg/provider/file/hasher"
-	"crypto-provider/pkg/provider/file/signer"
-	"crypto-provider/pkg/provider/file/verifier"
+	"github.com/cosmos/crypto-provider/pkg/components"
+	"github.com/cosmos/crypto-provider/pkg/impl/file/hasher"
+	"github.com/cosmos/crypto-provider/pkg/impl/file/signer"
+	"github.com/cosmos/crypto-provider/pkg/impl/file/verifier"
 )
 
 const (
@@ -38,4 +38,12 @@ func (fp *FileProvider) GetHasher() components.Hasher {
 // Metadata returns metadata for the crypto provider.
 func (fp *FileProvider) Metadata() components.ProviderMetadata {
 	return fp.metadata
+}
+
+func (fp *FileProvider) GetPubKey() components.PubKey {
+	return NewPubKeyFromString(fp.metadata.PublicKey)
+}
+
+func (fp *FileProvider) InitializeKeys() error {
+	return nil
 }
