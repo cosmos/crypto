@@ -19,6 +19,7 @@ const (
 	BackendMemory = "memory"
 )
 
+//nolint:unused
 const (
 	keyringFileDirName = "keyring-file"
 	keyringTestDirName = "keyring-test"
@@ -57,7 +58,8 @@ func NewKeyring(appName, backend, rootDir string, userInput io.Reader) (Keyring,
 	case BackendTest:
 		db, err = keyring.Open(newTestBackendKeyringConfig(appName, rootDir))
 	case BackendFile:
-		cfg, err := newFileBackendKeyringConfig(appName, rootDir, userInput)
+		var cfg keyring.Config
+		cfg, err = newFileBackendKeyringConfig(appName, rootDir, userInput)
 		if err != nil {
 			return nil, err
 		}
@@ -173,6 +175,8 @@ func newTestBackendKeyringConfig(appName, dir string) keyring.Config {
 }
 
 // newPassBackendKeyringConfig creates a new pass backend keyring configuration.
+//
+//nolint:unused
 func newPassBackendKeyringConfig(appName, _ string, _ io.Reader) (keyring.Config, error) {
 	prefix := fmt.Sprintf(passKeyringPrefix, appName)
 
