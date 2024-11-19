@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/99designs/keyring"
-	
+
 	"github.com/cosmos/crypto-provider/pkg/keyring/internal"
 )
 
