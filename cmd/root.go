@@ -1,10 +1,10 @@
 package main
 
 import (
-	"crypto-provider/pkg/cli"
-	"crypto-provider/pkg/keyring"
-	"crypto-provider/pkg/wallet"
 	"fmt"
+	"github.com/cosmos/crypto-provider/pkg/cli"
+	"github.com/cosmos/crypto-provider/pkg/keyring"
+	"github.com/cosmos/crypto-provider/pkg/wallet"
 	"os"
 
 	"github.com/spf13/cobra"

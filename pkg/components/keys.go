@@ -13,3 +13,8 @@ type PrivKey[T PubKey] interface {
 	Equals(other PrivKey[T]) bool
 	Type() string
 }
+
+// KeyFactory defines how a CryptoProvider creates and manages its keys
+type KeyFactory interface {
+	GenPubKeyFromString(string) (PubKey, error)
+}

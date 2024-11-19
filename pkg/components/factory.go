@@ -2,6 +2,9 @@ package components
 
 import (
 	"encoding/json"
+	"fmt"
+	"os"
+	"path/filepath"
 )
 
 // CryptoProviderFactory is a factory interface for creating CryptoProviders.
@@ -9,10 +12,21 @@ import (
 type CryptoProviderFactory interface {
 	// Create creates a new CryptoProvider instance using the given source
 	Create(source BuildSource) (CryptoProvider, error)
+
+	// Save saves the CryptoProvider to the underlying storage
+	Save(provider CryptoProvider) error
+
 	// Type returns the type of the CryptoProvider that this factory creates
 	Type() string
+
 	// SupportedSources returns the sources that this factory supports building CryptoProviders from
 	SupportedSources() []string
+}
+
+// CryptoProviderConfig defines the configuration structure for CryptoProvider.
+type CryptoProviderConfig struct {
+	ProviderType string                 `json:"provider_type"`
+	Options      map[string]interface{} `json:"options"`
 }
 
 type BuildSource interface {
@@ -71,4 +85,46 @@ func (m BuildSourceJson) Validate() error {
 	}
 	// Additional validation can be added here if needed
 	return nil
+}
+
+// BuildSourceConfig //////////////////////////////////////////////////////////////
+// is a BuildSource implementation that uses CryptoProviderConfig as source
+// /////////////////////////////////////////////////////////////////////////////////
+type BuildSourceConfig struct {
+	Config CryptoProviderConfig
+}
+
+func (m BuildSourceConfig) Type() string { return "config" }
+func (m BuildSourceConfig) Validate() error {
+	// Validate the Config field
+	if m.Config.ProviderType == "" {
+		return fmt.Errorf("provider_type is required in the configuration")
+	}
+	// Additional validation can be added here if needed
+	return nil
+}
+
+// BaseCryptoProviderFactory //////////////////////////////////////////////////////
+
+type BaseFactory struct {
+	BaseDir string
+}
+
+func (f *BaseFactory) Save(provider CryptoProvider) error {
+	metadata := provider.Metadata()
+	filename := fmt.Sprintf("%s.json", metadata.Name)
+
+	path := filepath.Join(f.BaseDir, filename)
+
+	// Create the directory if it doesn't exist
+	if err := os.MkdirAll(filepath.Dir(path), 0700); err != nil {
+		return fmt.Errorf("failed to create directory: %w", err)
+	}
+
+	data, err := metadata.Serialize()
+	if err != nil {
+		return fmt.Errorf("failed to marshal metadata: %w", err)
+	}
+
+	return os.WriteFile(path, data, 0600)
 }

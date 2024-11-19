@@ -1,9 +1,10 @@
 package file
 
 import (
-	"crypto-provider/pkg/components"
 	"encoding/json"
 	"fmt"
+
+	"github.com/cosmos/crypto-provider/pkg/components"
 )
 
 // FileProviderConfig holds the configuration for the File Provider

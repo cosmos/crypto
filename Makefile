@@ -1,5 +1,6 @@
 WALLET_BIN := build/wallet
-GOLANGCI_VERSION := v1.60.3
+golangci_version=v1.61.0
+golangci_installed_version=$(shell golangci-lint version --format short 2>/dev/null)
 
 .PHONY: demo run clean
 
@@ -18,11 +19,13 @@ demo:
 clean:
 	rm -f $(WALLET_BIN)
 
-
 # Install golangci-lint
 lint-install:
-	@echo "--> Installing golangci-lint $(GOLANGCI_VERSION)"
-	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@$(GOLANGCI_VERSION)
+	@echo "--> Checking golangci-lint installation"
+	@if [ "$(golangci_installed_version)" != "$(golangci_version)" ]; then \
+		echo "--> Installing golangci-lint $(golangci_version)"; \
+		go install github.com/golangci/golangci-lint/cmd/golangci-lint@$(golangci_version); \
+	fi
 
 # Run golangci-lint
 lint:
@@ -35,3 +38,5 @@ lint-fix:
 	@echo "--> Running linter with fix"
 	$(MAKE) lint-install
 	@golangci-lint run --fix
+
+.PHONY: lint lint-fix lint-install

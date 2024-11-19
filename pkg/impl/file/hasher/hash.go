@@ -1,6 +1,6 @@
 package hasher
 
-import "crypto-provider/pkg/components"
+import "github.com/cosmos/crypto-provider/pkg/components"
 
 type FileHash struct{}
 

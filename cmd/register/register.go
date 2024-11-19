@@ -2,14 +2,14 @@ package register
 
 import (
 	// Import all provider packages here
-	"crypto-provider/pkg/factory"
-	_ "crypto-provider/pkg/provider/file"
-	_ "crypto-provider/pkg/provider/file/cmd"
+	"github.com/cosmos/crypto-provider/pkg/factory"
+	_ "github.com/cosmos/crypto-provider/pkg/impl/file"
+	_ "github.com/cosmos/crypto-provider/pkg/impl/file/cmd"
 	// Add other providers as needed
-	// _ "crypto-provider/pkg/provider/someprovider"
+	// _ "github.com/cosmos/crypto-provider/pkg/impl/someprovider"
 )
 
 // Init is a dummy function to ensure this package is imported
 func Init() {
-	_ = factory.GetFactory()
+	_ = factory.GetGlobalFactory()
 }

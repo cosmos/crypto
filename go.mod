@@ -1,4 +1,4 @@
-module crypto-provider
+module github.com/cosmos/crypto-provider
 
 go 1.23
 

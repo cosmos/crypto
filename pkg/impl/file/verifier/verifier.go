@@ -1,10 +1,10 @@
 package verifier
 
 import (
-	"crypto-provider/pkg/components"
 	"crypto/ed25519"
 	"encoding/base64"
 	"fmt"
+	"github.com/cosmos/crypto-provider/pkg/components"
 )
 
 type FileSigVerifier struct {

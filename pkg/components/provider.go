@@ -13,4 +13,15 @@ type CryptoProvider interface {
 
 	// Metadata returns metadata for the crypto provider.
 	Metadata() ProviderMetadata
+
+	// GetPubKey returns the public key of the provider
+	GetPubKey() PubKey
+
+	// ProviderInitializer is an internal interface for keys initialization
+	ProviderInitializer
+}
+
+type ProviderInitializer interface {
+	// InitializeKeys initializes the keys for the provider.
+	InitializeKeys() error
 }

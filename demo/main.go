@@ -1,15 +1,16 @@
 package main
 
 import (
-	"crypto-provider/pkg/components"
-	"crypto-provider/pkg/keyring"
-	"crypto-provider/pkg/provider/file"
-	"crypto-provider/pkg/wallet"
 	"crypto/rand"
 	"fmt"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/cosmos/crypto-provider/pkg/components"
+	"github.com/cosmos/crypto-provider/pkg/impl/file"
+	"github.com/cosmos/crypto-provider/pkg/keyring"
+	"github.com/cosmos/crypto-provider/pkg/wallet"
 )
 
 const TestFile = "testdata/file_1.json"
