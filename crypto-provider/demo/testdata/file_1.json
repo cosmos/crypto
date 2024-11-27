@@ -1,0 +1,9 @@
+{
+    "Name": "Demo_File_Provider_1",
+    "Type": "file",
+    "Version": "1.0.0",
+    "PublicKey": "ikbdrUbkZJXeTqLykGi+YNxq8JT9M0x+Ke95WKZNOfs=",
+    "Config": {
+        "FilePath": "testdata/key.json"
+    }
+}
